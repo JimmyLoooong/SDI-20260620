@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>順德工業 (2351) | 深度投資研究報告</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        
+        :root {
+            --bg-color: #F9F8F6;
+            --text-main: #2C3032;
+            --text-muted: #5F6368;
+            --accent-gold: #B8860B;
+            --accent-light: #F0EAD6;
+            --border-color: #E5E1D8;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.8;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Noto Serif TC', serif;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+        .toc-active {
+            color: var(--accent-gold);
+            font-weight: 700;
+            border-left: 3px solid var(--accent-gold);
+            padding-left: 13px;
+        }
+        
+        .toc-item {
+            border-left: 3px solid transparent;
+            padding-left: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .highlight-text {
+            background: linear-gradient(120deg, rgba(184, 134, 11, 0.2) 0%, rgba(184, 134, 11, 0.05) 100%);
+            padding: 2px 4px;
+            border-radius: 2px;
+            font-weight: 500;
+            color: #8B6508;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 300px;
+        }
+
+        .data-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+        }
+
+        /* Simulator Styles */
+        .simulator-container {
+            background: #1e293b;
+            border-radius: 12px;
+            overflow: hidden;
+            color: #f8fafc;
+        }
+        .sim-controls {
+            background: #0f172a;
+            padding: 1rem;
+            border-bottom: 1px solid #334155;
+        }
+        canvas#simCanvas {
+            width: 100%;
+            height: 400px;
+            display: block;
+            background-color: #1e293b;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+<nav class="fixed top-0 w-full z-50 bg-white border-b border-gray-200 shadow-sm">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-slate-900 flex items-center justify-center rounded">
+                <span class="text-white font-bold text-xs">SDI</span>
+            </div>
+            <h1 class="text-xl font-bold tracking-tight serif-font">順德工業 <span class="text-sm font-normal text-gray-500 ml-1">2351.TW</span></h1>
+        </div>
+        <div class="hidden md:block text-sm text-gray-500">
+            深度投資研究報告 | 最新更新：2026-05
+        </div>
+    </div>
+    <div class="bg-slate-900 text-white py-1.5 overflow-hidden whitespace-nowrap border-t border-slate-800">
+        <div class="flex animate-[scroll_40s_linear_infinite] space-x-12 text-xs tracking-wider">
+            <span>🚀 功率導線架全球第一 (市佔 16.9%)</span>
+            <span>•</span>
+            <span>💡 受惠高壓 HVDC 架構演進</span>
+            <span>•</span>
+            <span>📈 2026Q1 毛利率提升至 19.1%</span>
+            <span>•</span>
+            <span>🔥 AI 導線架專案持續擴增</span>
+            <span>•</span>
+            <span>🚗 車用導線架佔比 48%，穩健復甦</span>
+            <span>•</span>
+            <span>🏗️ 彰化新廠佈局高附加價值產能</span>
+            <span>•</span>
+            <span>🚀 功率導線架全球領先供應商</span>
+        </div>
+    </div>
+</nav>
+
+<div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24 flex flex-col lg:flex-row gap-12">
+    
+    <aside class="hidden lg:block w-64 flex-shrink-0 relative">
+        <div class="sticky top-32 space-y-1 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">報告目錄</p>
+            <a href="#section-summary" class="toc-item toc-active block text-sm py-2 text-gray-700 hover:text-yellow-700">1. 核心重點摘要</a>
+            <a href="#section-market" class="toc-item block text-sm py-2 text-gray-700 hover:text-yellow-700">2. 全球產業定位與市佔率</a>
+            <a href="#section-ai-trend" class="toc-item block text-sm py-2 text-gray-700 hover:text-yellow-700">3. AI 伺服器高壓趨勢</a>
+            <a href="#section-tech-sim" class="toc-item block text-sm py-2 text-gray-700 hover:text-yellow-700">4. 封裝架構升級 (互動模擬)</a>
+            <a href="#section-core-biz" class="toc-item block text-sm py-2 text-gray-700 hover:text-yellow-700">5. 導線架三大主力佈局</a>
+            <a href="#section-heat" class="toc-item block text-sm py-2 text-gray-700 hover:text-yellow-700">6. 均熱片：第二成長曲線</a>
+            <a href="#section-financials" class="toc-item block text-sm py-2 text-gray-700 hover:text-yellow-700">7. 財務與加工費調整</a>
+            <a href="#section-moat-risks" class="toc-item block text-sm py-2 text-gray-700 hover:text-yellow-700">8. 護城河與風險評估</a>
+        </div>
+    </aside>
+
+    <main class="flex-1 max-w-4xl bg-white p-8 md:p-12 rounded-2xl border border-gray-200 shadow-sm">
+        
+        <header class="mb-12 border-b border-gray-200 pb-8">
+            <div class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-bold rounded mb-4">DEEP DIVE REPORT</div>
+            <h1 class="text-4xl md:text-5xl font-bold leading-tight serif-font mb-6 text-slate-900">
+                順德工業 (2351)：受惠 AI 高壓電源與封裝升級的導線架指標廠
+            </h1>
+            <p class="text-xl text-gray-600 leading-relaxed">
+                從精密文具金屬件起家，轉型為全球功率元件導線架的重要供應商。隨著 AI 運算推升資料中心電源朝 800V HVDC 等高壓架構演進，順德憑藉與國際 IDM 的長期 NPI 共同開發經驗與精密電鍍/沖壓技術，正迎來產品線組合的優化與獲利結構的改善。
+            </p>
+        </header>
+
+        <section id="section-summary" class="mb-16 scroll-mt-32">
+            <h2 class="text-2xl font-bold serif-font mb-6 text-slate-800 flex items-center gap-2">
+                <span class="text-yellow-600">|</span> 核心重點摘要
+            </h2>
+            <div class="prose prose-lg text-gray-700 max-w-none space-y-6">
+                <p>順德（2351）在功率導線架領域具備深厚基礎。2026年，受惠於車用、工業需求回溫及 AI 電源相關急單，<span class="highlight-text">2026Q1 毛利率提升至 19.1%（較 2025Q4 的 15.8% 明顯上行）</span>，反映出加工費調整、產品組合優化與產能稼動率改善的綜合效果。本業獲利改善趨勢明確。</p>
+                
+                <div class="grid md:grid-cols-2 gap-6 my-8">
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-100">
+                        <h4 class="font-bold text-slate-900 mb-2">🚀 高階料號滲透率提升</h4>
+                        <p class="text-sm">配合高壓高功率封裝趨勢（如 Copper Clip, TOLG, TOLT 架構），順德的高階導線架在散熱與載流能力上符合 IDM 客戶要求，AI 相關電源與車用導線架專案持續擴增。</p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-100">
+                        <h4 class="font-bold text-slate-900 mb-2">❄️ 均熱片推進認證</h4>
+                        <p class="text-sm">除既有導線架外，均熱片已開始對部分光通訊及網通客戶出貨並推進大尺寸規格認證，雖 2026 年營收貢獻仍小（占比估 <1%），但為中長期重要的新成長動能佈局。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-market" class="mb-16 scroll-mt-32">
+            <h2 class="text-2xl font-bold serif-font mb-6 text-slate-800 flex items-center gap-2">
+                <span class="text-yellow-600">|</span> 全球產業定位與市佔率
+            </h2>
+            <div class="prose prose-lg text-gray-700 max-w-none space-y-6">
+                <p>在半導體封裝材料鏈中，順德專注於技術門檻較高的功率導線架。根據 SEMI 針對導線架市場的調查數據，順德在 <span class="highlight-text">功率導線架（Power IC Lead Frame）領域市佔率高達 16.9%，位居全球第一</span>；而在整體導線架市場亦以 7.4% 的市佔率名列全球第四，與 ASM Pacific 等並列產業前段班。</p>
+                
+                <p class="text-sm text-gray-500 bg-gray-50 p-3 rounded border border-gray-200">
+                    註：市佔數據來源依據 SEMI (2020年4月) 資料。雖然各調研機構對「功率導線架」的涵蓋定義與自家封裝產能排除標準略有差異，但順德在獨立導線架供應商中的領先地位為業界共識。
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-8 my-8">
+                    <div class="data-card p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="text-sm font-bold text-gray-500 uppercase">功率導線架市場</h4>
+                                <p class="text-2xl font-bold text-slate-900">全球第 1 名</p>
+                            </div>
+                            <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xl font-bold">16.9%</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-4">市場規模：約 7.33 億美元</p>
+                        <div class="chart-wrapper h-48">
+                            <canvas id="powerShareChart"></canvas>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2 text-center">主要競爭對手：界霖(13%)、CWT(10.4%)</p>
+                    </div>
+                    
+                    <div class="data-card p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="text-sm font-bold text-gray-500 uppercase">整體導線架市場</h4>
+                                <p class="text-2xl font-bold text-slate-900">全球第 4 名</p>
+                            </div>
+                            <span class="bg-slate-100 text-slate-800 px-2 py-1 rounded text-xl font-bold">7.4%</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-4">市場規模：約 31.74 億美元</p>
+                        <div class="chart-wrapper h-48">
+                            <canvas id="totalShareChart"></canvas>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2 text-center">前三名：MHT、CWT、Shinko</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-ai-trend" class="mb-16 scroll-mt-32">
+            <h2 class="text-2xl font-bold serif-font mb-6 text-slate-800 flex items-center gap-2">
+                <span class="text-yellow-600">|</span> 產業趨勢：AI 伺服器高壓電源架構演進
+            </h2>
+            <div class="prose prose-lg text-gray-700 max-w-none space-y-6">
+                <p>AI 資料中心供電正朝更高電壓的 HVDC 架構演進（市場聚焦 800V 等級方案），以降低大電流傳輸過程中的電力損耗與散熱壓力。若新平台（如市場預期的下世代高效能 GPU 機櫃）加速導入，在 rack-scale 功耗上看近 1MW 的情境下，電力/保護/散熱模組的 BOM 價值量有顯著上修空間。</p>
+                
+                <!-- 新增：精確還原法說會英飛凌簡報的 BOM 價值拆解卡片 -->
+                <div class="bg-slate-900 text-white rounded-2xl p-8 my-8 shadow-xl border border-slate-700">
+                    <h3 class="text-xl font-bold text-yellow-500 mb-2 border-b border-slate-700 pb-4 flex flex-col md:flex-row md:justify-between md:items-end gap-2">
+                        <span>AI 機櫃高壓電源架構與 BOM 價值拆解</span>
+                        <span class="text-xs text-slate-400 font-normal bg-slate-800 px-2 py-1 rounded">資料來源：順德法說會 (引用 Infineon)</span>
+                    </h3>
+                    <p class="text-slate-300 text-sm mb-6 leading-relaxed">在一架高密度 AI 伺服器機櫃（AI Server Rack）中，單一機櫃的功率半導體 BOM 總價值高達 <strong class="text-yellow-400 text-lg bg-yellow-900/30 px-1">$12,000 至 $15,000 美元</strong>。順德透過提供對應的高階導線架，直接切入此高價值板塊：</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- 機櫃層級 -->
+                        <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700/50 hover:border-slate-500 transition-colors">
+                            <h4 class="font-bold text-white mb-4 flex items-center gap-2 pb-2 border-b border-slate-700">
+                                <span class="text-xl">🏢</span> 機櫃層級 (Rack Level)
+                            </h4>
+                            <ul class="space-y-3 text-sm text-slate-300">
+                                <li class="flex justify-between items-center">
+                                    <span>櫃頂交換機 <span class="text-xs text-slate-500">(Top of rack switches)</span> <strong class="text-white ml-1">x1</strong></span> 
+                                    <span class="text-yellow-400 font-mono">$200-215</span>
+                                </li>
+                                <li class="flex justify-between items-center">
+                                    <span>電源供應單元 <span class="text-xs text-slate-500">(PSU)</span> <strong class="text-white ml-1">x24</strong></span> 
+                                    <span class="text-yellow-400 font-mono">~$120/ea</span>
+                                </li>
+                                <li class="flex justify-between items-center">
+                                    <span>備援電池模組 <span class="text-xs text-slate-500">(BBU)</span> <strong class="text-white ml-1">x24</strong></span> 
+                                    <span class="text-yellow-400 font-mono">~$70/ea</span>
+                                </li>
+                                <li class="flex justify-between items-center text-slate-400 pt-2 border-t border-slate-700/50">
+                                    <span>算力匣 <span class="text-xs">(Compute Tray)</span> <strong class="text-slate-300">x18</strong></span>
+                                </li>
+                                <li class="flex justify-between items-center text-slate-400">
+                                    <span>交換機匣 <span class="text-xs">(Switch Tray)</span> <strong class="text-slate-300">x9</strong></span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 板端與元件層級 -->
+                        <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700/50 hover:border-slate-500 transition-colors">
+                            <h4 class="font-bold text-white mb-4 flex items-center gap-2 pb-2 border-b border-slate-700">
+                                <span class="text-xl">⚙️</span> 板端與保護元件 (Board Level)
+                            </h4>
+                            <ul class="space-y-3 text-sm text-slate-300">
+                                <li class="flex justify-between items-center">
+                                    <span>GPU 板 <span class="text-xs text-slate-500">(2 GPU + 1 CPU)</span> <strong class="text-white ml-1">x36</strong></span> 
+                                    <span class="text-yellow-400 font-mono">~$130/ea</span>
+                                </li>
+                                <li class="flex justify-between items-center">
+                                    <span>電源分配板 <span class="text-xs text-slate-500">(48V Bus Converter)</span> <strong class="text-white ml-1">x18</strong></span> 
+                                    <span class="text-yellow-400 font-mono">$70-150/ea</span>
+                                </li>
+                                <li class="flex justify-between items-center">
+                                    <span>智慧網卡 <span class="text-xs text-slate-500">(Smart NICs)</span> <strong class="text-white ml-1">x108</strong></span> 
+                                    <span class="text-yellow-400 font-mono">~$8/ea</span>
+                                </li>
+                                <li class="flex justify-between items-center mt-3 pt-3 border-t border-slate-600">
+                                    <span class="font-bold text-white">保護元件 <span class="text-xs text-slate-400 font-normal">(Hot-swaps, eFuses)</span> <strong class="text-yellow-400 ml-1">x >300</strong></span> 
+                                    <span class="text-yellow-400 font-bold font-mono text-base">~$3/ea</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-5 leading-relaxed bg-slate-800 p-3 rounded">
+                        <strong>產業戰略意涵：</strong> 隨著系統向 1200V / 800V HVDC 演進，這些模組對耐高壓、大電流的功率元件依賴度大幅提高。這不僅推升了單一晶片的價值，更拉高了保護元件（超過 300 顆）與對應高階導線架的加工價值總量。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-tech-sim" class="mb-16 scroll-mt-32">
+            <h2 class="text-2xl font-bold serif-font mb-6 text-slate-800 flex items-center gap-2">
+                <span class="text-yellow-600">|</span> 導線架：受惠封裝規格升級 (互動解析)
+            </h2>
+            <div class="prose prose-lg text-gray-700 max-w-none space-y-6">
+                <p>隨著功率元件封裝由傳統打線 (Wire-bond) 走向 Copper Clip Bonding，甚至朝向頂部冷卻 (Top-Side Cooling) 架構演進，導線架的加工複雜度大幅提升。<strong>順德並非發明這些封裝標準，但其憑藉精密沖壓與厚金屬電鍍能力，能配合國際 IDM 客戶落實這些高階設計。</strong></p>
+
+                <ul class="list-disc pl-6 space-y-3">
+                    <li><strong>受惠 Clip-bonding 滲透：</strong> 傳統金線無法承受高壓大電流，改採銅夾 (Clip) 連結。這要求導線架供應商具備高精度的金屬立體成型技術，以大面積平貼晶片表面，降低寄生電阻。</li>
+                    <li><strong>配合 TOLG 等耐熱應力結構：</strong> 在高溫環境下，PCB 與元件熱脹冷縮會導致應力撕裂。封裝廠發展出鷗翼型引腳 (TOLG) 來吸收應力，帶動導線架加工價值提升。</li>
+                    <li><strong>支援 TOLT 頂部冷卻：</strong> 頂部冷卻架構讓散熱路徑更直接，推升金屬結構件的平整度與電鍍要求。這類料號一旦通過認證，替換成本極高。</li>
+                </ul>
+
+                <div class="simulator-container my-8 shadow-2xl border border-slate-700">
+                    <div class="sim-controls flex flex-col md:flex-row gap-4 justify-between items-center">
+                        <div class="w-full md:w-1/2 space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 mb-1">封裝技術演進 (Packaging Tech)</label>
+                                <div class="flex bg-slate-800 rounded p-1 gap-1" id="techTabs">
+                                    <button class="flex-1 py-1.5 text-sm rounded bg-blue-600 text-white font-medium transition-colors" data-tech="wirebond">Wire-Bond</button>
+                                    <button class="flex-1 py-1.5 text-sm rounded text-slate-300 hover:bg-slate-700 font-medium transition-colors" data-tech="clip">Copper Clip + TOLG</button>
+                                    <button class="flex-1 py-1.5 text-sm rounded text-slate-300 hover:bg-slate-700 font-medium transition-colors" data-tech="tolt">TOLT (Top Cooling)</button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="flex justify-between text-xs font-bold text-slate-400 mb-1">
+                                    <span>模擬電流負載 (Current Load)</span>
+                                    <span id="currentVal" class="text-yellow-400 font-mono">100A</span>
+                                </label>
+                                <input type="range" id="currentSlider" min="20" max="800" value="100" class="w-full accent-yellow-500">
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/3 bg-slate-800 p-3 rounded border border-slate-700 flex flex-col justify-center">
+                            <div class="flex justify-between mb-2 border-b border-slate-700 pb-2">
+                                <span class="text-sm text-slate-400">系統熱阻估計 (Thermal Res.)</span>
+                                <span id="thermalRes" class="font-bold text-blue-400 font-mono">高 (High)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-slate-400">運作狀態</span>
+                                <span id="statusTxt" class="font-bold text-green-400">正常 (Safe)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <canvas id="simCanvas"></canvas>
+                    <div id="simDescText" class="bg-slate-800 p-3 text-center text-xs text-slate-400 border-t border-slate-700 leading-relaxed">
+                        <!-- Dynamic text updated via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-core-biz" class="mb-16 scroll-mt-32">
+            <h2 class="text-2xl font-bold serif-font mb-6 text-slate-800 flex items-center gap-2">
+                <span class="text-yellow-600">|</span> 導線架三大主力佈局：車用、工控與消費
+            </h2>
+            <div class="prose prose-lg text-gray-700 max-w-none space-y-6">
+                <p>除 AI 相關應用外，順德的營運基盤建立在車用與工控等長週期產業。2026 年各板塊需求呈現穩健復甦跡象：</p>
+
+                <div class="grid md:grid-cols-2 gap-8 my-8 items-center">
+                    <div class="chart-wrapper h-64">
+                        <canvas id="revenueMixChart"></canvas>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                            <h4 class="font-bold text-slate-900 flex justify-between"><span>🚗 車用導線架 (約48%)</span></h4>
+                            <p class="text-sm text-gray-600 mt-1"><strong>核心支柱。</strong> 受惠電動車逆變器、OBC、DC-DC 等高功率元件新品導入，法人預估 2026 年車用營收有望挑戰雙位數年增。其料號與高階電源架構有技術共通性。</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                            <h4 class="font-bold text-slate-900 flex justify-between"><span>🏭 工控與先進封裝 (約16%)</span></h4>
+                            <p class="text-sm text-gray-600 mt-1">應用於 5G、能源、固態變壓器(SST)及電網設備。Q2 起客戶端庫存調整結束，訂單動能改善，預期全年平穩向上。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                    <h4 class="font-bold text-slate-900">📱 消費性電子 (約28%) & 傳統文具 (總體約11%)</h4>
+                    <p class="text-sm text-gray-600 mt-1">消費性功率元件近期受惠急單挹注，動能優於原先悲觀預期。而佔總營收約 11% 的文具事業，隨關稅干擾淡化，接單亦回溫止跌，持續扮演提供穩定現金流的基礎角色。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-heat" class="mb-16 scroll-mt-32">
+            <h2 class="text-2xl font-bold serif-font mb-6 text-slate-800 flex items-center gap-2">
+                <span class="text-yellow-600">|</span> 均熱片：佈局第二成長曲線
+            </h2>
+            <div class="prose prose-lg text-gray-700 max-w-none space-y-6">
+                <p>面對高階運算平台（如 高階 GPU/CPU 封裝、CPO 光電共封裝）不斷推升的散熱件需求，順德正積極拓展大尺寸均熱片 (Heat Spreader) 業務，屬公司中長期佈局的第二成長曲線。</p>
+
+                <div class="relative border-l-2 border-gray-200 ml-4 space-y-8 pb-4 mt-8">
+                    <div class="relative pl-8">
+                        <div class="absolute w-4 h-4 bg-gray-300 rounded-full -left-[9px] top-1"></div>
+                        <h4 class="font-bold text-slate-900">前期基礎建設與送樣</h4>
+                        <p class="text-sm text-gray-600">導入 600 噸鍛造機等專用設備，運用既有精密金屬加工與電鍍經驗，對多家客戶進行產品驗證送樣。</p>
+                    </div>
+                    <div class="relative pl-8">
+                        <div class="absolute w-4 h-4 bg-yellow-500 rounded-full -left-[9px] top-1 ring-4 ring-yellow-100"></div>
+                        <h4 class="font-bold text-slate-900">2026 現況：初步出貨與推進認證</h4>
+                        <p class="text-sm text-gray-600">已開始對部分光通訊及網通應用客戶小量出貨，同時持續推進大尺寸（如 90x90 規格）在先進平台的可靠度認證。<strong>公司內部預期 2026 營收貢獻仍小（目標為數千萬元等級，佔比 <1%）。</strong></p>
+                    </div>
+                    <div class="relative pl-8">
+                        <div class="absolute w-4 h-4 bg-gray-300 rounded-full -left-[9px] top-1"></div>
+                        <h4 class="font-bold text-slate-900">中長期目標</h4>
+                        <p class="text-sm text-gray-600">待大型網通或資料中心客戶放量導入後，期望在 2027 年後逐步放大營收貢獻規模。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-financials" class="mb-16 scroll-mt-32">
+            <h2 class="text-2xl font-bold serif-font mb-6 text-slate-800 flex items-center gap-2">
+                <span class="text-yellow-600">|</span> 財務、加工費調整與產能擴張
+            </h2>
+            <div class="prose prose-lg text-gray-700 max-w-none space-y-6">
+                <p>面對原物料（銅、貴金屬）波動與各項成本上升，順德透過優化產品組合與加工費調整來維護利潤率。台灣與中國廠區近期受惠急單，稼動率均維持在高檔水準。</p>
+
+                <h3 class="text-xl font-bold text-slate-900 mt-8 mb-4">毛利率回升與加工費談判</h3>
+                <p>為反映成本通膨，公司已在 <strong>2026 年 1 月、4 月陸續推動加工費/報價調整</strong>，並不排除下半年視供需狀況進一步議價。配合高單價車用與高頻/高壓導線架出貨增加，2026Q1 毛利率已從 2025 年的低谷顯著回升。</p>
+
+                <div class="overflow-x-auto my-8">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <thead class="bg-slate-50 border-b border-gray-200 text-left">
+                            <tr>
+                                <th class="py-3 px-4 text-xs font-bold text-gray-500 uppercase">關鍵指標</th>
+                                <th class="py-3 px-4 text-xs font-bold text-gray-500 uppercase">2025 全年</th>
+                                <th class="py-3 px-4 text-xs font-bold text-yellow-700 uppercase">2026 Q1 實績</th>
+                                <th class="py-3 px-4 text-xs font-bold text-gray-500 uppercase">2026 全年法人推估</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 text-sm">
+                            <tr>
+                                <td class="py-4 px-4 font-bold text-slate-900">毛利率</td>
+                                <td class="py-4 px-4 text-gray-600">13.32%</td>
+                                <td class="py-4 px-4 font-bold text-green-600">19.12%</td>
+                                <td class="py-4 px-4 text-gray-600">~17% - 19% 區間</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-4 font-bold text-slate-900">營收趨勢</td>
+                                <td class="py-4 px-4 text-gray-600">年減 5.2%</td>
+                                <td class="py-4 px-4 font-bold text-green-600">年增 ~11% (創同期高)</td>
+                                <td class="py-4 px-4 text-gray-600">雙位數成長</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="text-xl font-bold text-slate-900 mt-8 mb-4">資本支出與彰化新廠</h3>
+                <p>因應未來長線需求，2026 年資本支出預期增加至 12-13 億元。公司正於彰化總部旁投資興建地上六層之智慧新廠（預計 2028 年投產），此擴產計畫將為 AI 相關高功率導線架與散熱模組提供後續的產能腹地。</p>
+            </div>
+        </section>
+
+        <section id="section-moat-risks" class="mb-16 scroll-mt-32">
+            <h2 class="text-2xl font-bold serif-font mb-6 text-slate-800 flex items-center gap-2">
+                <span class="text-yellow-600">|</span> 護城河與關鍵風險分析
+            </h2>
+            <div class="prose prose-lg text-gray-700 max-w-none space-y-6">
+                
+                <div class="bg-yellow-50 border border-yellow-200 p-6 rounded-xl my-6">
+                    <h3 class="text-lg font-bold text-yellow-800 mb-3 mt-0">🛡️ 護城河評估總結</h3>
+                    <p class="text-sm text-gray-700 leading-relaxed m-0">
+                        順德的護城河不在於「發明某一種封裝型式」，而在於能把高壓高功率封裝趨勢（如銅夾鍵合、頂部冷卻等）所要求的導線架規格，落實成可量產且良率穩定的產品。其核心能力包含：模具與沖壓精度、金屬加工與電鍍整合、以及與國際 IDM/封測客戶長期認證後的供應黏著度。隨 HVDC/AI 電源規格提升，高階導線架 ASP 與加工費具上行空間；同時公司以均熱片布局第二成長曲線，但短期仍屬小量驗證到放量的過渡階段。
+                    </p>
+                </div>
+
+                <h3 class="text-xl font-bold text-slate-900 mt-8 mb-4">潛在投資風險</h3>
+                <div class="space-y-4">
+                    <div class="border-l-4 border-slate-300 pl-4">
+                        <h4 class="font-bold text-slate-800">1. 原物料波動與議價反撲風險</h4>
+                        <p class="text-sm text-gray-600">近期毛利率回升部分得益於漲價與低價庫存。若未來終端需求轉弱或銅價劇烈波動，客戶可能強烈要求降價或重新議約，導致高毛利率無法長期維持。</p>
+                    </div>
+                    <div class="border-l-4 border-slate-300 pl-4">
+                        <h4 class="font-bold text-slate-800">2. AI Capex 週期與規格變更</h4>
+                        <p class="text-sm text-gray-600">雲端大廠資本支出具週期性。若 800V HVDC 架構導入速度放緩，或散熱技術加速轉向直接液冷(DLC)而跳過部分氣冷需求，可能導致高壓導線架與均熱片的成長斜率不如市場預期，拉長新廠投資回收期。</p>
+                    </div>
+                    <div class="border-l-4 border-slate-300 pl-4">
+                        <h4 class="font-bold text-slate-800">3. 均熱片領域之後進者挑戰</h4>
+                        <p class="text-sm text-gray-600">在均熱片市場，順德屬相對後進者。若現有台系散熱大廠發動價格戰或加速擴產，可能提高順德獲取大客戶認證與份額的難度。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="mt-16 pt-8 border-t border-gray-200 text-sm text-gray-500 text-center">
+            <p>© 2026 SDI Corporation Deep Dive Analysis. 內容彙整自法說會、公開財報與產業供應鏈觀察推估。</p>
+        </footer>
+
+    </main>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- 1. TOC Navigation Highlight ---
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.toc-item');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('toc-active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('toc-active');
+                }
+            });
+        });
+
+        // --- 2. Static Chart.js Initialization ---
+        // Power IC Leadframe Share Chart
+        const ctxPower = document.getElementById('powerShareChart');
+        if(ctxPower) {
+            new Chart(ctxPower.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['順德 (16.9%)', '界霖 (13.0%)', 'CWT (10.4%)', 'TSP (9.5%)', '江本 (8.2%)', '其他 (42.0%)'],
+                    datasets: [{
+                        data: [16.9, 13.0, 10.4, 9.5, 8.2, 42.0],
+                        backgroundColor: ['#B8860B', '#E5E1D8', '#D1D5DB', '#9CA3AF', '#6B7280', '#F3F4F6'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { position: 'right', labels: { boxWidth: 12, font: {size: 10} } } } }
+            });
+        }
+
+        // Total Leadframe Share Chart
+        const ctxTotal = document.getElementById('totalShareChart');
+        if(ctxTotal) {
+            new Chart(ctxTotal.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['MHT', 'CWT', 'Shinko', '順德 / ASM', '三井'],
+                    datasets: [{
+                        data: [10.8, 9.5, 8.3, 7.4, 6.2],
+                        backgroundColor: ['#E5E1D8', '#E5E1D8', '#E5E1D8', '#1E293B', '#E5E1D8'],
+                        borderRadius: 4
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { display: false } } } }
+            });
+        }
+
+        // Revenue Mix Chart
+        const ctxMix = document.getElementById('revenueMixChart');
+        if(ctxMix) {
+            new Chart(ctxMix.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['車用 (48%)', '消費性 (28%)', '工控 (16%)', 'AI 導線架 (6%)', '其他 (2%)'],
+                    datasets: [{
+                        data: [48, 28, 16, 6, 2],
+                        backgroundColor: ['#1E293B', '#9CA3AF', '#64748B', '#B8860B', '#E5E1D8'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    cutout: '60%', 
+                    plugins: { 
+                        legend: { position: 'right', labels: { boxWidth: 12, font: {size: 11} } },
+                        tooltip: { callbacks: { label: (ctx) => ` ${ctx.label}` } }
+                    } 
+                }
+            });
+        }
+
+        // --- 3. Interactive Simulator (Canvas API) ---
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+        const currentSlider = document.getElementById('currentSlider');
+        const currentValDisplay = document.getElementById('currentVal');
+        const techTabs = document.querySelectorAll('#techTabs button');
+        const thermalResDisplay = document.getElementById('thermalRes');
+        const statusTxtDisplay = document.getElementById('statusTxt');
+        const simDescText = document.getElementById('simDescText');
+
+        let currentTech = 'wirebond'; // 'wirebond', 'clip', 'tolt'
+        let currentLoad = 100;
+        let animationId;
+        let time = 0;
+
+        // Resize Canvas internally for crisp rendering
+        function resizeCanvas() {
+            canvas.width = canvas.clientWidth * window.devicePixelRatio;
+            canvas.height = canvas.clientHeight * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        }
+        window.addEventListener('resize', () => { resizeCanvas(); drawFrame(); });
+        resizeCanvas();
+
+        // UI Event Listeners
+        currentSlider.addEventListener('input', (e) => {
+            currentLoad = parseInt(e.target.value);
+            currentValDisplay.innerText = currentLoad + 'A';
+            updateMetrics();
+        });
+
+        techTabs.forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                techTabs.forEach(t => {
+                    t.classList.remove('bg-blue-600', 'text-white');
+                    t.classList.add('text-slate-300', 'hover:bg-slate-700');
+                });
+                e.target.classList.remove('text-slate-300', 'hover:bg-slate-700');
+                e.target.classList.add('bg-blue-600', 'text-white');
+                currentTech = e.target.dataset.tech;
+                updateMetrics();
+            });
+        });
+
+        // Metrics Logic
+        function updateMetrics() {
+            let limit, resistance, descText;
+            if (currentTech === 'wirebond') { 
+                limit = 150; 
+                resistance = "高 (High)"; 
+                descText = "* 此物理模擬旨在展示：傳統金線 (Wire-bond) 在大電流下易產生高熱，且熱能主要透過 PCB 向下傳導，散熱受限。";
+            }
+            else if (currentTech === 'clip') { 
+                limit = 400; 
+                resistance = "中 (Medium)"; 
+                descText = "* 此物理模擬旨在展示：(1) Copper Clip 具備的平滑沖壓橋面與大面積頂部接觸；(2) 透過導線架引腳 (Leadframe Pin) 焊回 PCB 的真實工程結構；(3) 鷗翼引腳 (Gull-wing) 的緩衝構型。";
+            }
+            else if (currentTech === 'tolt') { 
+                limit = 800; 
+                resistance = "低 (Low, Top-Cooling)"; 
+                descText = "* 此物理模擬旨在展示：TOLT 頂部冷卻架構將散熱路徑翻轉，熱能不經過 PCB 即由頂部散熱片 (散熱鰭片) 直接排出，大幅降低熱阻。";
+            }
+
+            thermalResDisplay.innerText = resistance;
+            if(simDescText) simDescText.innerText = descText;
+
+            if (currentLoad > limit) {
+                statusTxtDisplay.innerText = "⚠️ 過載/高溫危險";
+                statusTxtDisplay.className = "font-bold text-red-500";
+            } else if (currentLoad > limit * 0.8) {
+                statusTxtDisplay.innerText = "⚡ 接近極限";
+                statusTxtDisplay.className = "font-bold text-yellow-500";
+            } else {
+                statusTxtDisplay.innerText = "✓ 安全運行";
+                statusTxtDisplay.className = "font-bold text-green-400";
+            }
+        }
+
+        // Draw Logic
+        function drawChipBase(cx, cy) {
+            // PCB
+            ctx.fillStyle = '#334155';
+            ctx.fillRect(cx - 150, cy + 40, 300, 20);
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = "12px sans-serif";
+            ctx.fillText("PCB 基板", cx - 25, cy + 55);
+
+            // Silicon Die
+            ctx.fillStyle = '#475569';
+            ctx.fillRect(cx - 50, cy - 10, 100, 50);
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(cx - 50, cy - 10, 100, 50);
+            ctx.fillStyle = '#cbd5e1';
+            ctx.fillText("Power IC", cx - 25, cy + 20);
+        }
+
+        function drawHeatGlow(cx, cy, intensity, radius = 60) {
+            if (intensity <= 0) return;
+            const grad = ctx.createRadialGradient(cx, cy, 10, cx, cy, radius);
+            grad.addColorStop(0, `rgba(239, 68, 68, ${Math.min(0.8, intensity)})`); // Red-500
+            grad.addColorStop(1, 'rgba(239, 68, 68, 0)');
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function drawHeatParticles(cx, cy, direction, intensity) {
+            if (intensity <= 0) return;
+            ctx.fillStyle = `rgba(245, 158, 11, ${Math.min(0.6, intensity)})`; // Yellow
+            for (let i = 0; i < 15; i++) {
+                let offset = (time * 0.5 + i * 10) % 50;
+                let x = cx - 30 + (i * 5);
+                let y = direction === 'up' ? cy - 20 - offset : cy + 50 + offset;
+                
+                ctx.beginPath();
+                ctx.arc(x, y + Math.sin(time*0.1 + i)*2, 2, 0, Math.PI*2);
+                ctx.fill();
+            }
+        }
+
+        function drawFrame() {
+            const w = canvas.clientWidth;
+            const h = canvas.clientHeight;
+            const cx = w / 2;
+            const cy = h / 2 + 20;
+
+            // Clear
+            ctx.clearRect(0, 0, w, h);
+            
+            // Draw Base
+            drawChipBase(cx, cy);
+
+            let heatIntensity = 0;
+
+            if (currentTech === 'wirebond') {
+                heatIntensity = currentLoad / 150;
+                
+                // Draw Wire Bonds
+                ctx.beginPath();
+                ctx.moveTo(cx - 30, cy - 10);
+                ctx.quadraticCurveTo(cx - 60, cy - 40, cx - 100, cy + 40);
+                ctx.moveTo(cx, cy - 10);
+                ctx.quadraticCurveTo(cx, cy - 50, cx - 120, cy + 40);
+                ctx.moveTo(cx + 30, cy - 10);
+                ctx.quadraticCurveTo(cx + 60, cy - 40, cx + 100, cy + 40);
+                
+                ctx.strokeStyle = '#fbbf24'; // Gold wire
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Heat effect (concentrated on wires)
+                drawHeatGlow(cx - 50, cy - 20, heatIntensity - 0.5, 80);
+                drawHeatParticles(cx, cy, 'down', heatIntensity * 0.5); // Poor dissipation down
+                
+            } else if (currentTech === 'clip') {
+                heatIntensity = currentLoad / 400;
+
+                // 導線架引腳 (Leadframe Pin - 右側供銅夾停靠)
+                ctx.fillStyle = '#94a3b8'; // 銀灰色金屬
+                ctx.fillRect(cx + 65, cy + 28, 30, 12);
+
+                // 銅夾 (Copper Clip) - 運用貝茲曲線重現平滑的「金屬橋狀」沖壓件，並大面積覆蓋 IC
+                ctx.fillStyle = '#b45309'; 
+                ctx.beginPath();
+                // 頂部大面積接觸 (左至右)
+                ctx.moveTo(cx - 35, cy - 10);
+                ctx.lineTo(cx - 35, cy - 18);
+                ctx.lineTo(cx + 40, cy - 18);
+                // 圓滑過渡向下至導線架引腳
+                ctx.quadraticCurveTo(cx + 65, cy - 18, cx + 70, cy + 28);
+                ctx.lineTo(cx + 95, cy + 28);
+                ctx.lineTo(cx + 95, cy + 35);
+                ctx.lineTo(cx + 60, cy + 35);
+                // 圓滑過渡回頂部
+                ctx.quadraticCurveTo(cx + 50, cy - 10, cx + 35, cy - 10);
+                ctx.closePath();
+                ctx.fill();
+
+                // 鷗翼引腳 (TOLG Lead) - 左側 S 型避震結構
+                ctx.fillStyle = '#94a3b8';
+                ctx.beginPath();
+                ctx.moveTo(cx - 50, cy + 5);
+                ctx.lineTo(cx - 70, cy + 5);
+                // 圓滑過渡向下向外
+                ctx.quadraticCurveTo(cx - 85, cy + 5, cx - 90, cy + 25);
+                // PCB 上的平腳 (Foot)
+                ctx.lineTo(cx - 110, cy + 25);
+                ctx.lineTo(cx - 110, cy + 40);
+                ctx.lineTo(cx - 80, cy + 40);
+                // 圓滑過渡回 IC
+                ctx.quadraticCurveTo(cx - 70, cy + 15, cx - 50, cy + 15);
+                ctx.closePath();
+                ctx.fill();
+
+                drawHeatGlow(cx, cy, heatIntensity - 0.6, 100);
+                drawHeatParticles(cx, cy, 'down', 0.8); // Heat spreads down to PCB
+
+            } else if (currentTech === 'tolt') {
+                heatIntensity = currentLoad / 800;
+
+                // Inverted Chip / Leadframe supporting top cool
+                ctx.fillStyle = '#b45309'; 
+                ctx.fillRect(cx - 50, cy + 30, 100, 10); // Bottom pads
+                
+                // Top exposed pad
+                ctx.fillStyle = '#94a3b8'; // Nickel/Palladium finish
+                ctx.fillRect(cx - 60, cy - 30, 120, 20); 
+
+                // Heatsink on top
+                ctx.fillStyle = '#cbd5e1';
+                ctx.fillRect(cx - 80, cy - 50, 160, 20);
+                for(let i=0; i<8; i++) {
+                    ctx.fillRect(cx - 75 + (i*20), cy - 80, 10, 30); // Fins
+                }
+
+                drawHeatGlow(cx, cy - 30, heatIntensity - 0.7, 100);
+                // Heat escapes UPWARDS
+                drawHeatParticles(cx, cy - 80, 'up', 1.0); 
+            }
+
+            // Draw current flow indicators (flowing dots)
+            ctx.fillStyle = '#38bdf8';
+            let dotOffset = (time * 2) % 40;
+            ctx.beginPath();
+            ctx.arc(cx - 130 + dotOffset, cy + 50, 3, 0, Math.PI*2); // Flow in PCB
+            ctx.fill();
+
+            time++;
+            animationId = requestAnimationFrame(drawFrame);
+        }
+
+        // Init Sim
+        updateMetrics();
+        drawFrame();
+
+    });
+</script>
+
+</body>
+</html>
